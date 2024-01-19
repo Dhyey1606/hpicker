@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Stealer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #game-container {
+            position: relative;
+        }
+
+        .heart {
+            font-size: 24px;
+            color: #ff3366;
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #question,
+        #options,
+        #message {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        #options button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #options button:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <p>Pick the Hearts!</p>
+</div>
+
+<div id="question">Are you tired of clicking hearts?</div>
+
+<div id="options">
+    <button onclick="tiredMessage()">Yes</button>
+    <button onclick="continueClicking()">No</button>
+</div>
+
+<div id="message">
+    <strong>Awww, you got tired so early!? 😔</strong><br><br>
+    It's okay, but I won't get tired giving you my hearts till my time ends! ❤️<br><br>
+    Today on <strong>19th of January</strong>, I am asking you out on a date for tomorrow at 5 pm at Bucky's,
+    and then Law Garden. You can suggest a place as well and the time you are comfortable with.
+</div>
+
+<script>
+    let clickCount = 0;
+    let isTired = false;
+
+    function createHeart() {
+        if (!isTired) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.top = `${Math.random() * 80}vw`;
+            heart.style.left = `${Math.random() * 60}vh`;
+
+            heart.addEventListener('click', () => {
+                clickCount++;
+                heart.remove();
+
+                if (clickCount % 15 === 0) {
+                    document.getElementById('question').style.display = 'block';
+                    document.getElementById('options').style.display = 'block';
+                }
+
+                if (clickCount % 30 === 0 && !isTired) {
+                    tiredMessage();
+                }
+            });
+
+            document.getElementById('game-container').appendChild(heart);
+        }
+    }
+
+    function tiredMessage() {
+        isTired = true;
+        document.getElementById('question').style.display = 'none';
+        document.getElementById('options').style.display = 'none';
+        document.getElementById('message').style.display = 'block';
+    }
+
+    function continueClicking() {
+        isTired = false;
+        document.getElementById('question').style.display = 'none';
+        document.getElementById('options').style.display = 'none';
+    }
+
+    setInterval(createHeart, 1000);
+</script>
+
+</body>
+</html>
